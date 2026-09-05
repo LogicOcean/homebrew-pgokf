@@ -14,10 +14,10 @@ class Pgokf < Formula
   # The tag tracks default_version in crates/extension/pgokf.control, the single
   # source of truth for the extension version; bump the url, the sha256 below,
   # and the version assertions in `test do` together.
-  url "https://github.com/LogicOcean/pgokf/archive/refs/tags/v0.1.15.tar.gz"
+  url "https://github.com/LogicOcean/pgokf/archive/refs/tags/v0.1.16.tar.gz"
   # Digest of the GitHub-generated tag tarball. Regenerate on every release with:
   #   curl -fsSL https://github.com/LogicOcean/pgokf/archive/refs/tags/vX.Y.Z.tar.gz | shasum -a 256
-  sha256 "444b84b45d8eb6b610b79674ca23e76c77f99d27b48df18dcf08d6e5068fa64d"
+  sha256 "eda23ac62c88cacdd227654efe7b905dbee17bb1a1be2d3b2a8b58c233550a21"
   license "AGPL-3.0-only"
   head "https://github.com/LogicOcean/pgokf.git", branch: "main"
 
@@ -88,7 +88,7 @@ class Pgokf < Formula
     control = share/"postgresql@#{pg_major}/extension/pgokf.control"
     control = share/"postgresql/extension/pgokf.control" unless control.exist?
     assert_predicate control, :exist?, "pgokf.control not installed"
-    assert_match "default_version = '0.1.15'", control.read
+    assert_match "default_version = '0.1.16'", control.read
 
     # End-to-end: initialize a throwaway cluster and CREATE EXTENSION.
     pg_bin = pg.opt_bin
@@ -102,7 +102,7 @@ class Pgokf < Formula
         "#{pg_bin}/psql -h 127.0.0.1 -p #{port} -U postgres -d postgres " \
         "-tAc 'CREATE EXTENSION pgokf; SELECT extversion FROM pg_extension WHERE extname=''pgokf'';'",
       )
-      assert_match "0.1.15", output
+      assert_match "0.1.16", output
     ensure
       system pg_bin/"pg_ctl", "-D", datadir, "-w", "stop"
     end
